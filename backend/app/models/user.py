@@ -20,13 +20,26 @@ class User(db.Model):
 
     # ── Helpers ───────────────────────────────────────────────
     def set_password(self, raw_password: str) -> None:
-        self.password_hash = generate_password_hash(raw_password)
+        self.password_hash = generate_password_hash(raw_password,method='pbkdf2:sha256')
 
     def check_password(self, raw_password: str) -> bool:
         return check_password_hash(self.password_hash, raw_password)
 
     def is_admin(self) -> bool:
         return self.role == "admin"
-
+    
+    def to_dict(self):
+        """Convert to dictionary for JSON serialization"""
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'role': self.role,
+            'reputation': self.reputation,
+            'is_active': self.is_active,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }
+    
     def __repr__(self) -> str:           # pragma: no cover
         return f"<User {self.username} ({self.role})>"

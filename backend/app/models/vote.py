@@ -54,6 +54,26 @@ class Vote(db.Model):
         }
     
     @classmethod
+    def get_vote_counts(cls, question_id=None, answer_id=None):
+        """Get vote counts for question or answer"""
+        if question_id:
+            query = cls.query.filter_by(question_id=question_id)
+        elif answer_id:
+            query = cls.query.filter_by(answer_id=answer_id)
+        else:
+            return {"upvotes": 0, "downvotes": 0, "total": 0}
+        
+        votes = query.all()
+        upvotes = sum(1 for vote in votes if vote.vote_type == VoteType.UP)
+        downvotes = sum(1 for vote in votes if vote.vote_type == VoteType.DOWN)
+        
+        return {
+            "upvotes": upvotes,
+            "downvotes": downvotes,
+            "total": upvotes - downvotes
+        }
+    
+    @classmethod
     def get_user_vote(cls, user_id, question_id=None, answer_id=None):
         """Get user's vote for specific question or answer"""
         query = cls.query.filter_by(user_id=user_id)
