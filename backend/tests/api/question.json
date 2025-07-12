@@ -1,0 +1,7 @@
+{
+  "id": 1,
+  "title": "Example Question",
+  "body": "Lorem ipsum...",
+  "vote_count": 5,
+  "user_vote": "upvote" 
+}

@@ -1,0 +1,12 @@
+erDiagram/database for notification system
+    USERS ||--o{ NOTIFICATIONS : has
+    USERS {
+        int id PK
+    }
+    NOTIFICATIONS {
+        int id PK
+        int user_id FK
+        string message
+        boolean is_read
+        datetime created_at
+    }
